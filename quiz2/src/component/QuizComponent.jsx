@@ -1,39 +1,51 @@
 import React, { useState } from "react";
+import { Component } from "react";
 import Data from "./resources/quizQuestion.json";
 
-export default function QuizComponent() {
-  const [question, setQuestion] = useState(0);
-
-  const handlePrevious = () => {
-    if (question > 0) {
-      setQuestion((prev)=>prev-1);
+export default class QuizComponent extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      question:0
     }
-  };
-
-  const handleNext = () => {
-    if (question < Data.length - 1) {
-      setQuestion((prev)=>prev+1);
-    }
-  };
-  const handleQuit =()=>{
-    return(alert("Are you sure you want to quit ?"))
   }
 
+  handlePrevious = () => {
+    if (this.state.question > 0) {
+      this.setState(previous =>({
+        question:previous.question-1
+      }))
+    }
+  };
+
+  handleNext = () => {
+    if (this.state.question < Data.length - 1) {
+      this.setState(previous =>({
+        question:previous.question+1
+      }))
+    }
+  };
+
+  handleQuit =()=>{
+    return(alert("Are you sure you want to quit ?"))
+  }
+  render(){
   return (
     <div className="QuizComponent">
       <h1>Question</h1>
-      <p>{question + 1} of {Data.length}</p>
-      <h3>{Data[question].question}</h3>
+      <p>{this.state.question + 1} of {Data.length}</p>
+      <h3>{Data[this.state.question].question}</h3>
       <div className="options">
-        {Object.values(Data[question]).slice(1,5).map((option, index) => (
+        {Object.values(Data[this.state.question]).slice(1,5).map((option, index) => (
           <option key={index} className="choose">{option}</option>
         ))}
       </div>
       <div className="buttons">
-        <button className="button1" onClick={handlePrevious}>Previous</button>
-        <button className="button2" onClick={handleNext}>Next</button>
-        <button className="button3" onClick={handleQuit}>Quit</button>
+        <button className="button1" onClick={this.handlePrevious}>Previous</button>
+        <button className="button2" onClick={this.handleNext}>Next</button>
+        <button className="button3" onClick={this.handleQuit}>Quit</button>
       </div>
     </div>
   );
+  }
 }
